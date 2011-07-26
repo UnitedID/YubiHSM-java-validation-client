@@ -47,8 +47,7 @@
     </developers>
 
     <properties>
-        <cxf.version>2.4.0</cxf.version>
-        <spring.version>3.0.5.RELEASE</spring.version>
+        <cxf.version>2.3.4</cxf.version>
     </properties>
 
     <dependencies>
