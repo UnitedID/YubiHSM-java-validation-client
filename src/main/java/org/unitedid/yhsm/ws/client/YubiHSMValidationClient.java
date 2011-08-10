@@ -18,12 +18,10 @@
 
 package org.unitedid.yhsm.ws.client;
 
-import org.unitedid.yhsm.ws.*;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.unitedid.yhsm.ws.*;
 
-import javax.xml.ws.BindingProvider;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -32,37 +30,28 @@ public class YubiHSMValidationClient {
     /** Logger */
     private final Logger log = LoggerFactory.getLogger(YubiHSMValidationClient.class);
 
-    private ValidateAeadServiceImplService validateAeadServiceImplService;
-    private ValidateAeadService validateAeadService;
+    private ValidationServiceImplService validationServiceImplService;
+    private ValidationService validationService;
     private URL wsdlURL;
 
     public YubiHSMValidationClient(String wsdl) {
         try {
             wsdlURL = new URL(wsdl);
-            validateAeadServiceImplService = new ValidateAeadServiceImplService(wsdlURL);
+            validationServiceImplService = new ValidationServiceImplService(wsdlURL);
             //BindingProvider port = (BindingProvider) validateAeadServiceImplService.getPort(ValidateAeadServiceImplService.class);
             //port.getRequestContext().put(BindingProvider.USERNAME_PROPERTY)
-            validateAeadService = validateAeadServiceImplService.getValidateAeadServiceImplPort();
+            validationService = validationServiceImplService.getValidationServiceImplPort();
         } catch (MalformedURLException e) {
             log.error("Malformed URL {}", wsdlURL.toString(), e);
         }
     }
 
     public boolean validateAEAD(String nonce, int keyHandle, String aead, String plaintext) throws YubiHSMErrorException_Exception, UnsupportedEncodingException {
-        return validateAeadService.validateAEAD(nonce, keyHandle, aead, plaintext.getBytes("UTF-8"));
+        return validationService.validateAEAD(nonce, keyHandle, aead, plaintext.getBytes("UTF-8"));
     }
 
-    public static void main(String[] args) throws YubiHSMErrorException_Exception, MalformedURLException, UnsupportedEncodingException {
-        URL wsdlURL = new URL(args[0]);
-        System.out.println("using WSDL: " + wsdlURL.toString());
-        ValidateAeadServiceImplService validateAeadServiceImplService = new ValidateAeadServiceImplService(wsdlURL);
-        ValidateAeadService validateAeadService = validateAeadServiceImplService.getValidateAeadServiceImplPort();
-
-        if (validateAeadService.validateAEAD(args[1], Integer.parseInt(args[2]), args[3], args[4].getBytes("UTF-8"))) {
-            System.out.println("AEAD validated successfully!");
-        } else {
-            System.out.println("AEAD validation failed!");
-        }
-        System.exit(0);
+    public int validateOathHOTP(String nonce, int keyHandle, String aead, int counter, String otp, int lookAhead) throws YubiHSMErrorException_Exception {
+        return validationService.validateOathHOTP(nonce, keyHandle, aead, counter, otp, lookAhead);
     }
+
 }

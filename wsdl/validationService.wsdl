@@ -1,0 +1,112 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions name="ValidationServiceImplService" targetNamespace="http://ws.yhsm.unitedid.org/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://ws.yhsm.unitedid.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:types>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://ws.yhsm.unitedid.org/" xmlns:tns="http://ws.yhsm.unitedid.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="validateAEAD" type="tns:validateAEAD"/>
+  <xs:element name="validateAEADResponse" type="tns:validateAEADResponse"/>
+  <xs:element name="validateOathHOTP" type="tns:validateOathHOTP"/>
+  <xs:element name="validateOathHOTPResponse" type="tns:validateOathHOTPResponse"/>
+  <xs:complexType name="validateOathHOTP">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="nonce" type="xs:string"/>
+      <xs:element name="keyHandle" type="xs:int"/>
+      <xs:element minOccurs="0" name="aead" type="xs:string"/>
+      <xs:element name="counter" type="xs:int"/>
+      <xs:element minOccurs="0" name="otp" type="xs:string"/>
+      <xs:element name="lookAhead" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="validateOathHOTPResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="validateAEAD">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="nonce" type="xs:string"/>
+      <xs:element name="keyHandle" type="xs:int"/>
+      <xs:element minOccurs="0" name="aead" type="xs:string"/>
+      <xs:element minOccurs="0" name="plaintext" type="xs:base64Binary"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="validateAEADResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="YubiHSMErrorException">
+    <xs:sequence/>
+  </xs:complexType>
+  <xs:element name="YubiHSMErrorException" type="tns:YubiHSMErrorException"/>
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="YubiHSMErrorException">
+    <wsdl:part element="tns:YubiHSMErrorException" name="YubiHSMErrorException">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="validateOathHOTPResponse">
+    <wsdl:part element="tns:validateOathHOTPResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="validateOathHOTP">
+    <wsdl:part element="tns:validateOathHOTP" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="validateAEADResponse">
+    <wsdl:part element="tns:validateAEADResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="validateAEAD">
+    <wsdl:part element="tns:validateAEAD" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="ValidationService">
+    <wsdl:operation name="validateOathHOTP">
+      <wsdl:input message="tns:validateOathHOTP" name="validateOathHOTP">
+    </wsdl:input>
+      <wsdl:output message="tns:validateOathHOTPResponse" name="validateOathHOTPResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:YubiHSMErrorException" name="YubiHSMErrorException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="validateAEAD">
+      <wsdl:input message="tns:validateAEAD" name="validateAEAD">
+    </wsdl:input>
+      <wsdl:output message="tns:validateAEADResponse" name="validateAEADResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:YubiHSMErrorException" name="YubiHSMErrorException">
+    </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ValidationServiceImplServiceSoapBinding" type="tns:ValidationService">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="validateOathHOTP">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="validateOathHOTP">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="validateOathHOTPResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="YubiHSMErrorException">
+        <soap:fault name="YubiHSMErrorException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="validateAEAD">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="validateAEAD">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="validateAEADResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="YubiHSMErrorException">
+        <soap:fault name="YubiHSMErrorException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ValidationServiceImplService">
+    <wsdl:port binding="tns:ValidationServiceImplServiceSoapBinding" name="ValidationServiceImplPort">
+      <soap:address location="http://localhost:8080/validation-service/validationService"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

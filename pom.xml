@@ -24,7 +24,7 @@
 
     <groupId>org.unitedid</groupId>
     <artifactId>YubiHSM-java-validation-client</artifactId>
-    <version>0.1</version>
+    <version>0.2</version>
     <inceptionYear>2011</inceptionYear>
     <packaging>jar</packaging>
     <organization>
@@ -95,7 +95,7 @@
                             <sourceRoot>${basedir}/target/generated/src/main/java</sourceRoot>
                             <wsdlOptions>
                                 <wsdlOption>
-                                    <wsdl>${basedir}/wsdl/validateAeadService.wsdl</wsdl>
+                                    <wsdl>${basedir}/wsdl/validationService.wsdl</wsdl>
                                 </wsdlOption>
                             </wsdlOptions>
                         </configuration>
