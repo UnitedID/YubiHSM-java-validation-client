@@ -5,6 +5,8 @@
   <xs:element name="validateAEADResponse" type="tns:validateAEADResponse"/>
   <xs:element name="validateOathHOTP" type="tns:validateOathHOTP"/>
   <xs:element name="validateOathHOTPResponse" type="tns:validateOathHOTPResponse"/>
+  <xs:element name="validateOathTOTP" type="tns:validateOathTOTP"/>
+  <xs:element name="validateOathTOTPResponse" type="tns:validateOathTOTPResponse"/>
   <xs:complexType name="validateOathHOTP">
     <xs:sequence>
       <xs:element minOccurs="0" name="nonce" type="xs:string"/>
@@ -18,6 +20,23 @@
   <xs:complexType name="validateOathHOTPResponse">
     <xs:sequence>
       <xs:element name="return" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="validateOathTOTP">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="nonce" type="xs:string"/>
+      <xs:element name="keyHandle" type="xs:int"/>
+      <xs:element minOccurs="0" name="aead" type="xs:string"/>
+      <xs:element minOccurs="0" name="otp" type="xs:string"/>
+      <xs:element name="period" type="xs:int"/>
+      <xs:element name="drift" type="xs:int"/>
+      <xs:element name="backwardDrift" type="xs:int"/>
+      <xs:element name="forwardDrift" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="validateOathTOTPResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:boolean"/>
     </xs:sequence>
   </xs:complexType>
   <xs:complexType name="validateAEAD">
@@ -39,6 +58,10 @@
   <xs:element name="YubiHSMErrorException" type="tns:YubiHSMErrorException"/>
 </xs:schema>
   </wsdl:types>
+  <wsdl:message name="validateOathTOTPResponse">
+    <wsdl:part element="tns:validateOathTOTPResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
   <wsdl:message name="YubiHSMErrorException">
     <wsdl:part element="tns:YubiHSMErrorException" name="YubiHSMErrorException">
     </wsdl:part>
@@ -59,11 +82,23 @@
     <wsdl:part element="tns:validateAEAD" name="parameters">
     </wsdl:part>
   </wsdl:message>
+  <wsdl:message name="validateOathTOTP">
+    <wsdl:part element="tns:validateOathTOTP" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
   <wsdl:portType name="ValidationService">
     <wsdl:operation name="validateOathHOTP">
       <wsdl:input message="tns:validateOathHOTP" name="validateOathHOTP">
     </wsdl:input>
       <wsdl:output message="tns:validateOathHOTPResponse" name="validateOathHOTPResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:YubiHSMErrorException" name="YubiHSMErrorException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="validateOathTOTP">
+      <wsdl:input message="tns:validateOathTOTP" name="validateOathTOTP">
+    </wsdl:input>
+      <wsdl:output message="tns:validateOathTOTPResponse" name="validateOathTOTPResponse">
     </wsdl:output>
       <wsdl:fault message="tns:YubiHSMErrorException" name="YubiHSMErrorException">
     </wsdl:fault>
@@ -91,6 +126,18 @@
         <soap:fault name="YubiHSMErrorException" use="literal"/>
       </wsdl:fault>
     </wsdl:operation>
+    <wsdl:operation name="validateOathTOTP">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="validateOathTOTP">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="validateOathTOTPResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="YubiHSMErrorException">
+        <soap:fault name="YubiHSMErrorException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
     <wsdl:operation name="validateAEAD">
       <soap:operation soapAction="" style="document"/>
       <wsdl:input name="validateAEAD">
@@ -106,7 +153,7 @@
   </wsdl:binding>
   <wsdl:service name="ValidationServiceImplService">
     <wsdl:port binding="tns:ValidationServiceImplServiceSoapBinding" name="ValidationServiceImplPort">
-      <soap:address location="http://localhost:8080/validation-service/validationService"/>
+      <soap:address location="http://localhost:8081/yhsm-validation-ws/validationService"/>
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

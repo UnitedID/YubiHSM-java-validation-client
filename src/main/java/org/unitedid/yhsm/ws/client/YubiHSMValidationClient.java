@@ -46,12 +46,40 @@ public class YubiHSMValidationClient {
         }
     }
 
-    public boolean validateAEAD(String nonce, int keyHandle, String aead, String plaintext) throws YubiHSMErrorException_Exception, UnsupportedEncodingException {
+    public boolean validateAEAD(String nonce, int keyHandle, String aead, String plaintext)
+            throws YubiHSMErrorException_Exception, UnsupportedEncodingException {
         return validationService.validateAEAD(nonce, keyHandle, aead, plaintext.getBytes("UTF-8"));
     }
 
-    public int validateOathHOTP(String nonce, int keyHandle, String aead, int counter, String otp, int lookAhead) throws YubiHSMErrorException_Exception {
+    public int validateOathHOTP(String nonce, int keyHandle, String aead, int counter, String otp, int lookAhead)
+            throws YubiHSMErrorException_Exception {
         return validationService.validateOathHOTP(nonce, keyHandle, aead, counter, otp, lookAhead);
     }
 
+    public boolean validateOathTOTP(String nonce, int keyHandle, String aead, String otp, int period, int drift,
+                                int backwardDrift, int forwardDrift)
+            throws YubiHSMErrorException_Exception {
+        return validationService.validateOathTOTP(nonce, keyHandle, aead, otp, period, drift, backwardDrift,
+                forwardDrift);
+    }
+
+    public static void main(String[] args)
+            throws YubiHSMErrorException_Exception, MalformedURLException, UnsupportedEncodingException {
+        URL wsdlURL = new URL(args[0]);
+        System.out.println("using WSDL: " + wsdlURL.toString());
+        ValidationServiceImplService validationServiceImplService = new ValidationServiceImplService(wsdlURL);
+        ValidationService validationService = validationServiceImplService.getValidationServiceImplPort();
+
+        /*if (validateAeadService.validateAEAD(args[1], Integer.parseInt(args[2]), args[3], args[4].getBytes("UTF-8"))) {
+            System.out.println("AEAD validated successfully!");
+        } else {
+            System.out.println("AEAD validation failed!");
+        }*/
+
+
+        System.out.println(validationService.validateOathHOTP(args[1], Integer.parseInt(args[2]), args[3],
+                Integer.parseInt(args[4]), args[5], Integer.parseInt(args[6])));
+
+        System.exit(0);
+    }
 }

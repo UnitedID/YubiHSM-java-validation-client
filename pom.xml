@@ -24,7 +24,7 @@
 
     <groupId>org.unitedid</groupId>
     <artifactId>YubiHSM-java-validation-client</artifactId>
-    <version>0.2</version>
+    <version>0.3-dev</version>
     <inceptionYear>2011</inceptionYear>
     <packaging>jar</packaging>
     <organization>
